@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smartmath/models/modelLogin.dart';
+import 'package:smartmath/pages/Homepage.dart';
 import 'package:smartmath/pages/info.dart';
 import 'package:smartmath/pages/register.dart';
 import 'package:flutter/gestures.dart';  
@@ -57,7 +58,7 @@ class _LoginState extends State<Login> {
         print('Navigating to Home');
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => Info()),
+          MaterialPageRoute(builder: (context) => MainPage()),
           (route) => false,
         );
       } else {

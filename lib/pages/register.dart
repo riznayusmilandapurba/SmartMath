@@ -34,7 +34,7 @@ class _RegisterState extends State<Register> {
       });
 
       http.Response res = await http.post(
-        Uri.parse('http://192.168.0.100/smartmath_server/register.php'),
+        Uri.parse('http://192.168.1.3/smartmath_server/register.php'),
         body: {
           "fullname": txtFullname.text,
           "password": txtPassword.text,
