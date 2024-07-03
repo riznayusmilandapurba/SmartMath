@@ -30,7 +30,7 @@ class _LoginState extends State<Login> {
       });
 
       http.Response res = await http.post(
-        Uri.parse('http://192.168.0.100/smartmath_server/login.php'),
+        Uri.parse('http://192.168.0.101/smartmath_server/login.php'),
         body: {
           "email": txtEmail.text,
           "password": txtPassword.text,

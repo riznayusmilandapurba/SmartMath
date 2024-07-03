@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:smartmath/models/modelLatihan.dart'; // Sesuaikan dengan path file model_latihan.dart Anda
+import 'package:smartmath/models/modelLatihan.dart'; 
+import 'package:smartmath/models/modelSubmitLatihan.dart'; 
+import 'package:google_fonts/google_fonts.dart';
+import 'package:smartmath/pages/scorelatihan.dart';
 
 class LatihanSoal extends StatefulWidget {
   final int id_kelas;
@@ -23,7 +26,7 @@ class _LatihanSoalState extends State<LatihanSoal> {
   }
 
   Future<void> _fetchQuestions() async {
-    final url = Uri.parse('http://192.168.0.100/smartmath_server/latihanGET.php?id_kelas=${widget.id_kelas}');
+    final url = Uri.parse('http://192.168.0.101/smartmath_server/latihanGET.php?id_kelas=${widget.id_kelas}');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -36,7 +39,6 @@ class _LatihanSoalState extends State<LatihanSoal> {
       } else {
         setState(() {
           _isLoading = false;
-          
         });
       }
     } else {
@@ -46,13 +48,51 @@ class _LatihanSoalState extends State<LatihanSoal> {
     }
   }
 
+  Future<void> _submitAnswer(String answer, int idLatihan) async {
+    final url = Uri.parse('http://192.168.0.101/smartmath_server/user_latihanPOST.php');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'id_latihan': idLatihan,
+        'submission_data': answer,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = modelSubmitLatihanFromJson(response.body);
+      if (data.success) {
+        // Handle success response
+        print('Jawaban berhasil dikirim');
+      } else {
+        // Handle error response
+        print('Gagal mengirim jawaban: ${data.message}');
+      }
+    } else {
+      // Handle HTTP error
+      print('Gagal mengirim jawaban: ${response.statusCode}');
+    }
+  }
+
   void _nextQuestion() {
     if (_currentQuestionIndex < _questions.length - 1) {
       setState(() {
         _currentQuestionIndex++;
       });
+    } else {
+      // Jika ini adalah soal terakhir, tampilkan tombol "Finish"
+      _submitAnswer(_questions[_currentQuestionIndex].optionA, _questions[_currentQuestionIndex].idLatihan);
+      _navigateToScorePage(); // Redirect ke halaman skor setelah selesai
     }
   }
+
+  void _navigateToScorePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ScorePage(idKelas: widget.id_kelas)),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +101,7 @@ class _LatihanSoalState extends State<LatihanSoal> {
         backgroundColor: Color.fromRGBO(80, 190, 91, 0.86),
         title: Text(
           'Latihan',
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -78,38 +118,57 @@ class _LatihanSoalState extends State<LatihanSoal> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        _questions[_currentQuestionIndex].soal,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(184, 232, 147, 1),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      ),
-                      SizedBox(height: 20),
-                      Column(
-                        children: [
-                          _buildOptionButton('A', _questions[_currentQuestionIndex].optionA),
-                          _buildOptionButton('B', _questions[_currentQuestionIndex].optionB),
-                          _buildOptionButton('C', _questions[_currentQuestionIndex].optionC),
-                          _buildOptionButton('D', _questions[_currentQuestionIndex].optionD),
-                          _buildOptionButton('E', _questions[_currentQuestionIndex].optionE),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _nextQuestion,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(80, 190, 91, 0.86),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          'Next',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${_currentQuestionIndex + 1}/${_questions.length}',
+                              textAlign: TextAlign.right,
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              _questions[_currentQuestionIndex].soal,
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            _buildOptionButton('', _questions[_currentQuestionIndex].optionA, _questions[_currentQuestionIndex].idLatihan),
+                            _buildOptionButton('', _questions[_currentQuestionIndex].optionB, _questions[_currentQuestionIndex].idLatihan),
+                            _buildOptionButton('', _questions[_currentQuestionIndex].optionC, _questions[_currentQuestionIndex].idLatihan),
+                            _buildOptionButton('', _questions[_currentQuestionIndex].optionD, _questions[_currentQuestionIndex].idLatihan),
+                            _buildOptionButton('', _questions[_currentQuestionIndex].optionE, _questions[_currentQuestionIndex].idLatihan),
+                            SizedBox(height: 20),
+                            Center(
+                              child: ElevatedButton(
+                                onPressed: _nextQuestion,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: _currentQuestionIndex < _questions.length - 1 ? Colors.grey : Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  _currentQuestionIndex < _questions.length - 1 ? 'Next' : 'Finish',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -118,26 +177,27 @@ class _LatihanSoalState extends State<LatihanSoal> {
     );
   }
 
-  Widget _buildOptionButton(String label, String text) {
+  Widget _buildOptionButton(String label, String text, int idLatihan) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
-            // Handle answer selection
+            _submitAnswer(text, idLatihan);
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromRGBO(80, 190, 91, 0.86),
+            backgroundColor: Color.fromRGBO(252, 251, 251, 1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
           child: Text(
             '$label. $text',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.white,
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: Colors.black,
+              fontWeight: FontWeight.bold
             ),
           ),
         ),
@@ -145,3 +205,5 @@ class _LatihanSoalState extends State<LatihanSoal> {
     );
   }
 }
+
+
