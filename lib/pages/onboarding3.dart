@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smartmath/pages/onboarding3.dart';
+import 'package:smartmath/pages/Homepage.dart';
 
 class OnBoarding3 extends StatefulWidget {
   const OnBoarding3({super.key});
@@ -69,7 +69,7 @@ class _OnBoarding3State extends State<OnBoarding3> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => OnBoarding3()),
+                      MaterialPageRoute(builder: (context) => MainPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -92,7 +92,10 @@ class _OnBoarding3State extends State<OnBoarding3> {
             Center(
               child: TextButton(
                 onPressed: () {
-                  
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) => HomePage()),
+                  //   );
                 },
                 child: Text(
                   'Already have an account?',
