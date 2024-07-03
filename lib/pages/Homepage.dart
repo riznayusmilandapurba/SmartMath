@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smartmath/pages/info.dart';
+import 'package:smartmath/pages/kategorilatihan.dart';
 // import 'package:intl/intl.dart';
 
 class MainPage extends StatefulWidget {
@@ -27,8 +29,8 @@ class _PageBottomBarState extends State<MainPage>
         children: const [
           HomePage(),
           // PageCourse(),
-          // PageQuiz(),
-          // PageOther(),
+          KategoriLatihan(),
+          Info(),
         ],
       ),
       bottomNavigationBar: BottomAppBar(
