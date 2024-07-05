@@ -15,8 +15,8 @@ class ModelLogin {
     String email;
     String phone;
     String address;
-    int id_user;
- 
+    int idUser;
+    String role;
 
     ModelLogin({
         required this.value,
@@ -25,8 +25,8 @@ class ModelLogin {
         required this.email,
         required this.phone,
         required this.address,
-        required this.id_user,
-
+        required this.idUser,
+        required this.role,
     });
 
     factory ModelLogin.fromJson(Map<String, dynamic> json) => ModelLogin(
@@ -36,8 +36,8 @@ class ModelLogin {
         email: json["email"],
         phone: json["phone"],
         address: json["address"],
-        id_user: json["id_user"],
-
+        idUser: json["id_user"],
+        role: json["role"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -47,7 +47,7 @@ class ModelLogin {
         "email": email,
         "phone": phone,
         "address": address,
-        "id_user": id_user,
-
+        "id_user": idUser,
+        "role": role,
     };
 }

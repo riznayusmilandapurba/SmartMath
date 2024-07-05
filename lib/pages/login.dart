@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
       if (data.value == 1) {
         await sessionManager.saveSession(
           data.value ?? 0,
-          data.id_user ?? 0,
+          data.idUser ?? 0,
           data.fullname ?? "",
           data.email ?? "",
           data.phone ?? "",

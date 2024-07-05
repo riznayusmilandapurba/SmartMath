@@ -3,9 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:smartmath/models/modelRegister.dart';
 import 'package:smartmath/pages/login.dart';
+import 'package:smartmath/pages/verification_code.dart';
+
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  const Register({Key? key}) : super(key: key);
 
   @override
   State<Register> createState() => _RegisterState();
@@ -34,7 +36,7 @@ class _RegisterState extends State<Register> {
       });
 
       http.Response res = await http.post(
-        Uri.parse('http://192.168.1.3/smartmath_server/register.php'),
+        Uri.parse('http://192.168.0.101/smartmath_server/register.php'),
         body: {
           "fullname": txtFullname.text,
           "password": txtPassword.text,
@@ -46,7 +48,6 @@ class _RegisterState extends State<Register> {
 
       ModelRegister data = modelRegisterFromJson(res.body.trim());
 
-      // Check response value
       setState(() {
         isLoading = false;
       });
@@ -56,13 +57,12 @@ class _RegisterState extends State<Register> {
       );
 
       if (data.value == 1) {
-        // Registration successful, navigate to login
-        Navigator.pushAndRemoveUntil(
+        // Registration successful, navigate to verification page
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Login()),
-          (route) => false,
+          MaterialPageRoute(builder: (context) => VerificationPage(email: txtEmail.text)),
         );
-      } 
+      }
     } catch (e) {
       setState(() {
         isLoading = false;
@@ -99,7 +99,7 @@ class _RegisterState extends State<Register> {
                 child: Text(
                   'Create Account',
                   style: GoogleFonts.hindGuntur(
-                    textStyle: Theme.of(context).textTheme.displayLarge,
+                    textStyle: Theme.of(context).textTheme.headline4,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -120,7 +120,7 @@ class _RegisterState extends State<Register> {
                           Text(
                             'Username',
                             style: GoogleFonts.inter(
-                              textStyle: Theme.of(context).textTheme.displayLarge,
+                              textStyle: Theme.of(context).textTheme.headline5,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -167,7 +167,7 @@ class _RegisterState extends State<Register> {
                           Text(
                             'Email',
                             style: GoogleFonts.openSans(
-                              textStyle: Theme.of(context).textTheme.displayLarge,
+                              textStyle: Theme.of(context).textTheme.headline4,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -218,7 +218,7 @@ class _RegisterState extends State<Register> {
                           Text(
                             'Password',
                             style: GoogleFonts.inter(
-                              textStyle: Theme.of(context).textTheme.displayLarge,
+                              textStyle: Theme.of(context).textTheme.headline5,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -277,9 +277,9 @@ class _RegisterState extends State<Register> {
                           ),
                           SizedBox(height: 20),
                           Text(
-                            'Asal Sekolah',
+                            'School Address',
                             style: GoogleFonts.openSans(
-                              textStyle: Theme.of(context).textTheme.displayLarge,
+                              textStyle: Theme.of(context).textTheme.headline4,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -299,7 +299,7 @@ class _RegisterState extends State<Register> {
                                 });
                               },
                               decoration: InputDecoration(
-                                hintText: 'Input Asal Sekolah',
+                                hintText: 'Input School Address',
                                 hintStyle: TextStyle(
                                   color: Color.fromRGBO(130, 130, 130, 1),
                                   fontSize: 14,
@@ -330,7 +330,7 @@ class _RegisterState extends State<Register> {
                           Text(
                             'Phone Number',
                             style: GoogleFonts.openSans(
-                              textStyle: Theme.of(context).textTheme.displayLarge,
+                              textStyle: Theme.of(context).textTheme.headline4,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
