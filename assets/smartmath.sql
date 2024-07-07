@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 03 Jul 2024 pada 08.10
+-- Waktu pembuatan: 07 Jul 2024 pada 18.13
 -- Versi server: 10.4.19-MariaDB
 -- Versi PHP: 7.4.19
 
@@ -64,8 +64,11 @@ CREATE TABLE `latihan` (
 --
 
 INSERT INTO `latihan` (`id_latihan`, `id_kelas`, `soal`, `option_A`, `option_B`, `option_C`, `option_D`, `option_E`, `answer`) VALUES
-(1, 1, '1. Sebuah fungsi kuadrat diberikan oleh f(x)=3x2 + 2x - 5. Mana dari pernyataan berikut yang benar tentang fungsi ini?', 'A. Titik tertinggi fungsi ini terletak pada koordinat (2,11)', 'B. Fungsi ini memiliki dua akar real', 'C. Diskriminan fungsi ini adalah -52', 'D. Garis simetri fungsi ini adalah x = -1/3', 'E. Garis simetri fungsi ini adalah x = -1/4', 'B. Fungsi ini memiliki dua akar real'),
-(2, 1, '2. Jika setelah membagi banyaknya data dengan angka dua, hasilnya bilangan bulat, maka....', 'A. median terletak di tengah antara urutan ke-m dan ke-(m+1)', 'B. tidak bisa diketahui mediannya', 'C. median terletak di tengah antara urutan ke-m dan ke-(m+2)', 'D. median terletak di tengah', 'E. median terletak di semua angka', 'A. median terletak di tengah antara urutan ke-m dan ke-(m+1)');
+(3, 1, '1. Hasil dari 24 x 3 + 15 : 3/4 - 7 adalah.....', 'A. 14', 'B. 15', 'C. 16', 'D. 17', 'E. 20', 'E. 20'),
+(4, 1, 'Bentuk sederhana dari 24𝑎 −7 𝑏 −2𝑐 / 6𝑎−2𝑏−3𝑐−6 adalah .....\r\n', 'A. 7bc/a5', 'B. 5bc2/a5', 'C. 4bc7/a5', 'D. 4bc5/a5', 'E. 5bc7/a5', 'C. 4bc7/a5'),
+(5, 1, 'Persamaan linear dalam dua variabel adalah persamaan yang dapat ditulis dalam bentuk ax+by=c, merupakan definisi dari....', 'A. persamaan linear dalam dua variabel', 'B. persamaan linear umum', 'C. persamaan linear dalam satu variabel', 'D. persamaan linear empat variabel', 'E. persamaan linear tanpa variabel', 'A. persamaan linear dalam dua variabel'),
+(6, 1, 'Sebuah fungsi kuadrat diberikan oleh f(x)=3x2 + 2x - 5. Mana dari pernyataan berikut yang benar tentang fungsi ini?', 'A. Titik tertinggi fungsi ini terletak pada koordinat (2,11)', 'B. Fungsi ini memiliki dua akar real.', 'C. Diskriminan fungsi ini adalah -52.', 'D. Garis simetri fungsi ini adalah x = -1/3', 'E. Garis simetri fungsi ini adalah x = -1/4', 'B. Fungsi ini memiliki dua akar real.'),
+(7, 1, 'Sebuah parabola memiliki titik puncak (3,−4) dan melalui titik (1,2). Persamaan kuadrat yang merepresentasikan parabola ini adalah:', 'A. 𝑦=2𝑥2−8𝑥+6y=2x2−8x+6', 'B. 𝑦=-2𝑥2+8𝑥−6y=-2x2+8x−6', 'C. 𝑦=2𝑥2−12𝑥+6y=2x2−12x+6', 'D. 𝑦=-2𝑥2+12𝑥−6y=-2x2+12x−6', 'E. 𝑦=-2𝑥+12𝑥−6y=-2x+10x−6', 'D. 𝑦=-2𝑥2+12𝑥−6y=-2x2+12x−6');
 
 -- --------------------------------------------------------
 
@@ -119,6 +122,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
+  `role` int(11) NOT NULL,
   `verification_code` varchar(255) DEFAULT NULL,
   `is_verified` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -127,11 +131,8 @@ CREATE TABLE `users` (
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id_user`, `fullname`, `email`, `password`, `phone`, `address`, `verification_code`, `is_verified`) VALUES
-(11, 'Rizna', 'riznayusmilanda123@gmail.com', '202cb962ac59075b964b07152d234b70', '123', 'SMA 1 Padang', NULL, ''),
-(12, 'Indah Permata', 'yusmilandarizna@gmail.com', '202cb962ac59075b964b07152d234b70', '123', 'SMK N 1 Solok', '4261', ''),
-(13, 'Rizna', 'riznayusmilanda@gmail.com', '202cb962ac59075b964b07152d234b70', '123', 'SMA N 1 Padang', NULL, ''),
-(15, 'Sari Indah', 'riznayusmilanda1234@gmail.com', '202cb962ac59075b964b07152d234b70', '12345', 'SMK N 1 Solok Selatan, Padang, Sumbar', NULL, '');
+INSERT INTO `users` (`id_user`, `fullname`, `email`, `password`, `phone`, `address`, `role`, `verification_code`, `is_verified`) VALUES
+(25, 'Rizna', 'yusmilandarizna@gmail.com', '202cb962ac59075b964b07152d234b70', '123', 'SMA 1 Padang', 2, '9895', 'verified');
 
 -- --------------------------------------------------------
 
@@ -151,11 +152,18 @@ CREATE TABLE `user_latihan` (
 --
 
 INSERT INTO `user_latihan` (`id_user_latihan`, `id_latihan`, `submission_data`, `score`) VALUES
-(2, 1, 'A', '0'),
-(3, 1, 'B', '0'),
-(4, 1, 'B', '10'),
-(5, 1, 'B', '10'),
-(6, 2, 'A', '10');
+(66, 3, 'A. 14', '0'),
+(67, 4, 'D. 4bc5/a5', '0'),
+(68, 5, 'B. persamaan linear umum', '0'),
+(69, 6, 'A. Titik tertinggi fungsi ini terletak pada koordinat (2,11)', '0'),
+(70, 7, 'E. 𝑦=-2𝑥+12𝑥−6y=-2x+10x−6', '0'),
+(71, 7, 'A. 𝑦=2𝑥2−8𝑥+6y=2x2−8x+6', '0'),
+(72, 3, 'E. 20', '10'),
+(73, 4, 'C. 4bc7/a5', '10'),
+(74, 5, 'A. persamaan linear dalam dua variabel', '10'),
+(75, 6, 'B. Fungsi ini memiliki dua akar real.', '10'),
+(76, 7, 'E. 𝑦=-2𝑥+12𝑥−6y=-2x+10x−6', '0'),
+(77, 7, 'A. 𝑦=2𝑥2−8𝑥+6y=2x2−8x+6', '0');
 
 -- --------------------------------------------------------
 
@@ -237,19 +245,19 @@ ALTER TABLE `kelas`
 -- AUTO_INCREMENT untuk tabel `latihan`
 --
 ALTER TABLE `latihan`
-  MODIFY `id_latihan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_latihan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_latihan`
 --
 ALTER TABLE `user_latihan`
-  MODIFY `id_user_latihan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_user_latihan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_quiz`
